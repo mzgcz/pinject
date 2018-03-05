@@ -16,6 +16,7 @@ limitations under the License.
 
 import inspect
 import sys
+import re
 
 
 ALL_IMPORTED_MODULES = object()
@@ -28,7 +29,7 @@ def find_classes(modules, classes):
         all_classes = set()
     for module in _get_explicit_or_default_modules(modules):
         # TODO(kurts): how is a module getting to be None??
-        if module is not None:
+        if module is not None and not re.search(r"\.?six.moves\.?", module.__name__):
             all_classes |= _find_classes_in_module(module)
     return all_classes
 
